@@ -1,9 +1,15 @@
 local function get_python_path()
-  local local_venv = vim.loop.cwd() .. "/venv/Scripts/python.exe"
+  if vim.loop.os_uname().sysname == "Windows_NT" then
+    local_venv = vim.loop.cwd() .. "/venv/Scripts/python.exe"
+  else
+    local_venv = vim.loop.cwd() .. "/venv/bin/python"
+  end
+
+
   if vim.fn.filereadable(local_venv) == 1 then
     return local_venv
   end
-  return "C:/Users/ivan.kulikov/venv_nvim/Scripts/python.exe"
+  return  vim.g.python3_host_prog
 end
 -- Load dotenv if available
 local function load_dotenv(filepath)
@@ -21,7 +27,7 @@ end
 local env_path = vim.loop.cwd() .. "/.env"
 local env = vim.loop.fs_stat(env_path) and load_dotenv(env_path) or {}
 local PROJECT_NAME = env["PROJECT_NAME"] 
-local PROJECT_DIRECTORY = "."
+local PROJECT_DIRECTORY = vim.loop.cwd()
 
 return {
 	{

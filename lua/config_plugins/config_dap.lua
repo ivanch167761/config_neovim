@@ -1,15 +1,19 @@
 local dap = require("dap")
 local dapui = require("dapui")
 local Hydra = require("hydra")
-require("dap-python").setup("C:/Users/ivan.kulikov/venv_nvim/Scripts/python.exe")
+require("dap-python").setup("vim.g.python3_host_prog")
 
 
 local function get_python_path()
-  local local_venv = vim.loop.cwd() .. "/venv/Scripts/python.exe"
+  if vim.loop.os_uname().sysname == "Windows_NT" then
+    local_venv = vim.loop.cwd() .. "/venv/Scripts/python.exe"
+  else
+    local_venv = vim.loop.cwd() .. "/venv/bin/python"
+  end
   if vim.fn.filereadable(local_venv) == 1 then
     return local_venv
   end
-  return "C:/Users/ivan.kulikov/venv_nvim/Scripts/python.exe"
+  return "vim.g.python3_host_prog"
 end
 
 
