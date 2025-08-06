@@ -11,23 +11,31 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 require("mason").setup()
 require("mason-lspconfig").setup({ ensure_installed = { "ansiblels", "yamlls" } })
 
--- LSP setup for Ansible
-local lspconfig = require("lspconfig")
-lspconfig.ansiblels.setup({
-  cmd = { "ansible-language-server", "--stdio" },
-  filetypes = { "yaml.ansible" },
-  settings = {
-    ansible = {
-      validation = {
-        enabled = true,
-        lint = { enabled = true },
+
+-- LSP setup (only once using setup_handlers)
+require("mason-lspconfig").setup({
+  -- Default handler (for all other servers)
+  function(server_name)
+    require("lspconfig")[server_name].setup({})
+  end,
+
+  -- Custom config for ansiblels
+  ["ansiblels"] = function()
+    require("lspconfig").ansiblels.setup({
+      cmd = { "ansible-language-server", "--stdio" },
+      filetypes = { "yaml.ansible" },
+      settings = {
+        ansible = {
+          validation = {
+            enabled = true,
+            lint = { enabled = true },
+          },
+        },
+        yaml = {
+          hover = true,
+          completion = true,
+        },
       },
-    },
-    yaml = {
-      hover = true,
-      completion = true,
-    },
-  },
+    })
+  end,
 })
-
-

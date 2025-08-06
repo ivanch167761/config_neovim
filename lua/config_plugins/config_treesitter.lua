@@ -10,6 +10,12 @@ vim.defer_fn(function()
 			"vim",
 			"markdown",
 			"markdown_inline",
+			"python",
+			"yaml",
+			"rust",
+			"html",
+			"javascript",
+			
 		},
 
 		-- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)

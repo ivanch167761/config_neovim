@@ -50,6 +50,8 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   group = group,
   pattern = "*",
   callback = function()
-    vim.bo.fileencoding = "utf-8"
+    if vim.bo.modifiable then
+      vim.bo.fileencoding = "utf-8"
+    end
   end,
 })
